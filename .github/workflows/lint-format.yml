@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: 3.13
 
-      - run: pip3 install wpiformat==2025.33
+      - run: pip3 install wpiformat==2025.34
 
       - run: wpiformat
 
@@ -78,7 +78,7 @@ jobs:
           echo "CXX=clang++" >> $GITHUB_ENV
           echo "CXXFLAGS=-stdlib=libc++" >> $GITHUB_ENV
 
-      - run: pip3 install wpiformat==2025.33
+      - run: pip3 install wpiformat==2025.34
 
       - name: Install SFML dependencies
         run: |

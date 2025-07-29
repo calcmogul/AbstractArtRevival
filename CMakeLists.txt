@@ -31,7 +31,7 @@ target_include_directories(AbstractArtRevival PRIVATE src)
 
 include(FetchContent)
 
-fetchcontent_declare(
+FetchContent_Declare(
     SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
     GIT_TAG 3.0.1
@@ -39,12 +39,12 @@ fetchcontent_declare(
     EXCLUDE_FROM_ALL
     SYSTEM
 )
-fetchcontent_makeavailable(SFML)
+FetchContent_MakeAvailable(SFML)
 target_link_libraries(AbstractArtRevival PUBLIC SFML::Graphics)
 
 set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "Build using shared libraries")
 set(BUILD_TESTING OFF CACHE INTERNAL "Build Testing")
-fetchcontent_declare(
+FetchContent_Declare(
     Sleipnir
     GIT_REPOSITORY https://github.com/SleipnirGroup/Sleipnir
     # main on 2025-05-22
@@ -52,7 +52,7 @@ fetchcontent_declare(
     EXCLUDE_FROM_ALL
     SYSTEM
 )
-fetchcontent_makeavailable(Sleipnir)
+FetchContent_MakeAvailable(Sleipnir)
 target_link_libraries(AbstractArtRevival PUBLIC Sleipnir::Sleipnir)
 
 install(TARGETS AbstractArtRevival DESTINATION bin)
