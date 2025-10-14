@@ -5,10 +5,7 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
 endif()
 
-# Generate compile_commands.json by default
-if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
-    set(CMAKE_EXPORT_COMPILE_COMMANDS "YES" CACHE STRING "" FORCE)
-endif()
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(AbstractArtRevival)
 
@@ -16,15 +13,13 @@ file(GLOB_RECURSE cpp_src src/*.cpp)
 add_executable(AbstractArtRevival ${cpp_src})
 
 if(NOT MSVC)
-    target_compile_options(
-        AbstractArtRevival
-        PRIVATE -Wall -pedantic -Wextra -Werror
-    )
+    target_compile_options(AbstractArtRevival PRIVATE -Wall -Wextra -pedantic)
 else()
     # Suppress the following warnings:
     #   * C4244: lossy conversion
-    target_compile_options(AbstractArtRevival PRIVATE /wd4244 /WX)
+    target_compile_options(AbstractArtRevival PRIVATE /wd4244)
 endif()
+set_property(TARGET ${target} PROPERTY COMPILE_WARNING_AS_ERROR ON)
 
 target_compile_features(AbstractArtRevival PUBLIC cxx_std_23)
 target_include_directories(AbstractArtRevival PRIVATE src)
