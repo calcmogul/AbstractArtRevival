@@ -11,7 +11,7 @@ jobs:
     name: "wpiformat"
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -20,11 +20,11 @@ jobs:
           git checkout -b pr
           git branch -f main origin/main
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
-          python-version: 3.13
+          python-version: 3.14
 
-      - run: pip3 install wpiformat==2025.34
+      - run: pip3 install wpiformat==2025.36
 
       - run: wpiformat
 
@@ -53,7 +53,7 @@ jobs:
     name: "clang-tidy"
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -63,22 +63,22 @@ jobs:
           git checkout -b pr
           git branch -f main origin/main
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
-          python-version: 3.13
+          python-version: 3.14
 
-      - name: Install LLVM 20
+      - name: Install LLVM 21
         run: |
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
-          sudo ./llvm.sh 20 all
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 200
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 200
+          sudo ./llvm.sh 21 all
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-21 200
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-21 200
           echo "CC=clang" >> $GITHUB_ENV
           echo "CXX=clang++" >> $GITHUB_ENV
           echo "CXXFLAGS=-stdlib=libc++" >> $GITHUB_ENV
 
-      - run: pip3 install wpiformat==2025.34
+      - run: pip3 install wpiformat==2025.36
 
       - name: Install SFML dependencies
         run: |
