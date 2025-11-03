@@ -7,8 +7,8 @@
 #include <sleipnir/optimization/problem.hpp>
 
 template <>
-inline sf::Vector2<slp::Variable> sf::Vector2<slp::Variable>::rotatedBy(
-    sf::Angle phi) const {
+inline sf::Vector2<slp::Variable<double>>
+sf::Vector2<slp::Variable<double>>::rotatedBy(sf::Angle phi) const {
   // No zero vector assert, because rotating a zero vector is well-defined
   // (yields always itself)
   float cos = std::cos(static_cast<float>(phi.asRadians()));
@@ -16,7 +16,7 @@ inline sf::Vector2<slp::Variable> sf::Vector2<slp::Variable>::rotatedBy(
 
   // Don't manipulate x and y separately, otherwise they're overwritten too
   // early
-  return Vector2<slp::Variable>(cos * x - sin * y, sin * x + cos * y);
+  return Vector2<slp::Variable<double>>(cos * x - sin * y, sin * x + cos * y);
 }
 
 class CollisionDetector {
@@ -32,7 +32,7 @@ class CollisionDetector {
     problem.subject_to(α >= 0.0);
 
     auto x = problem.decision_variable(2);
-    point = sf::Vector2<slp::Variable>{x[0], x[1]};
+    point = sf::Vector2<slp::Variable<double>>{x[0], x[1]};
   }
 
   /**
@@ -61,8 +61,8 @@ class CollisionDetector {
                      sf::Angle rotation) {
     // Rotate point counterclockwise around rectangle center to counteract
     // rectangle's clockwise rotation
-    auto point_wrt_rect =
-        (point - sf::Vector2<slp::Variable>{center}).rotatedBy(-rotation);
+    auto point_wrt_rect = (point - sf::Vector2<slp::Variable<double>>{center})
+                              .rotatedBy(-rotation);
 
     // Point must be within rotated rectangle
     problem.subject_to(point_wrt_rect.x >= α * -size.x / 2.f);
@@ -85,9 +85,9 @@ class CollisionDetector {
   }
 
  private:
-  slp::Problem problem;
-  slp::Variable α;
-  sf::Vector2<slp::Variable> point;
+  slp::Problem<double> problem;
+  slp::Variable<double> α;
+  sf::Vector2<slp::Variable<double>> point;
 
   sf::Vector2f initial_guess{0.f, 0.f};
   int num_shapes = 0;
