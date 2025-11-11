@@ -25,7 +25,7 @@ include(FetchContent)
 FetchContent_Declare(
     SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 3.0.1
+    GIT_TAG 3.0.2
     GIT_SHALLOW ON
     EXCLUDE_FROM_ALL
     SYSTEM
@@ -38,8 +38,8 @@ set(BUILD_TESTING OFF CACHE INTERNAL "Build Testing")
 FetchContent_Declare(
     Sleipnir
     GIT_REPOSITORY https://github.com/SleipnirGroup/Sleipnir
-    # main on 2025-11-01
-    GIT_TAG 397ea39203f96d962b107204b523afc23b537e16
+    GIT_TAG v0.2.1
+    GIT_SHALLOW ON
     EXCLUDE_FROM_ALL
     SYSTEM
 )
