@@ -15,16 +15,12 @@
 #include "weapon.hpp"
 #include "weapon_type.hpp"
 
-/**
- * Weapon crate entity.
- */
+/// Weapon crate entity.
 class WeaponCrate {
  public:
-  /**
-   * Constructs a weapon crate.
-   *
-   * @param position Initial position.
-   */
+  /// Constructs a weapon crate.
+  ///
+  /// @param position Initial position.
   explicit WeaponCrate(const sf::Vector2f& position, WeaponType type)
       : position{position}, type{type}, ammo{get_initial_ammo(type)} {
     body_shape.setOrigin(body_shape.getGeometricCenter());
@@ -36,53 +32,37 @@ class WeaponCrate {
     spawn_clock.restart();
   }
 
-  /**
-   * Returns the position.
-   */
+  /// Returns the position.
   const sf::Vector2f& get_position() const { return position; }
 
-  /**
-   * Returns the weapon type this crate contains.
-   */
+  /// Returns the weapon type this crate contains.
   WeaponType get_type() const { return type; }
 
-  /**
-   * Returns the amount of ammunition this crate contains.
-   */
+  /// Returns the amount of ammunition this crate contains.
   int get_ammo() const { return ammo; }
 
-  /**
-   * Returns true if weapon crate lifetime clock expired.
-   */
+  /// Returns true if weapon crate lifetime clock expired.
   bool expired() const {
     return lifetime_clock.getElapsedTime().asSeconds() > 30.f;
   }
 
-  /**
-   * Returns the size of this crate for collision detection.
-   */
+  /// Returns the size of this crate for collision detection.
   sf::Vector2f get_size() const { return sf::Vector2f{WIDTH, WIDTH}; }
 
-  /**
-   * Returns the global bounds for collision detection.
-   */
+  /// Returns the global bounds for collision detection.
   sf::FloatRect get_global_bounds() const {
     return sf::FloatRect{position - get_size() / 2.f, get_size()};
   }
 
-  /**
-   * Draws weapon crate on main window.
-   *
-   * @param main_window Main window.
-   */
+  /// Draws weapon crate on main window.
+  ///
+  /// @param main_window Main window.
   void draw(sf::RenderWindow& main_window) { main_window.draw(body_shape); }
 
-  /**
-   * Spawns weapon crates at regular intervals near the player.
-   *
-   * @param weapon_crates The list of active weapon crates.
-   * @param player The player entity.
-   */
+  /// Spawns weapon crates at regular intervals near the player.
+  ///
+  /// @param weapon_crates The list of active weapon crates.
+  /// @param player The player entity.
   static void spawn(std::vector<WeaponCrate>& weapon_crates,
                     const Player& player) {
     if (spawn_clock.getElapsedTime().asSeconds() > SPAWN_PERIOD) {
@@ -107,9 +87,7 @@ class WeaponCrate {
     }
   }
 
-  /**
-   * Resets spawn clock.
-   */
+  /// Resets spawn clock.
   static void reset() { spawn_clock.restart(); }
 
  private:

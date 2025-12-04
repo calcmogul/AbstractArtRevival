@@ -19,22 +19,16 @@
 #include "constants.hpp"
 #include "globals.hpp"
 
-/**
- * Zombie type.
- */
+/// Zombie type.
 enum class ZombieType { Small, Big };
 
-/**
- * Zombie entity.
- */
+/// Zombie entity.
 class Zombie {
  public:
-  /**
-   * Constructs a zombie.
-   *
-   * @param position Initial position.
-   * @param type Zombie type.
-   */
+  /// Constructs a zombie.
+  ///
+  /// @param position Initial position.
+  /// @param type Zombie type.
   Zombie(const sf::Vector2f& position, ZombieType type) {
     this->position = position;
 
@@ -66,63 +60,45 @@ class Zombie {
   Zombie(Zombie&&) = default;
   Zombie& operator=(Zombie&&) = default;
 
-  /**
-   * Sets the position.
-   *
-   * @param position The position.
-   */
+  /// Sets the position.
+  ///
+  /// @param position The position.
   void set_position(const sf::Vector2f& position) {
     this->position = position;
     body_shape.setPosition(position);
   }
 
-  /**
-   * Returns the position.
-   */
+  /// Returns the position.
   const sf::Vector2f& get_position() const { return position; }
 
-  /**
-   * Returns the velocity.
-   */
+  /// Returns the velocity.
   const sf::Vector2f& get_velocity() const { return velocity; }
 
-  /**
-   * Returns the zombie's health.
-   */
+  /// Returns the zombie's health.
   float get_health() const { return health; }
 
-  /**
-   * Decrements the zombie's health by the given amount.
-   *
-   * @param decrement The amount to decrement.
-   */
+  /// Decrements the zombie's health by the given amount.
+  ///
+  /// @param decrement The amount to decrement.
   void decrement_health(float decrement) { health -= decrement; }
 
-  /**
-   * Returns the amount of experience killing this zombie would award.
-   */
+  /// Returns the amount of experience killing this zombie would award.
   uint32_t get_xp() const { return xp; }
 
-  /**
-   * Returns the zombie's radius for collision detection.
-   */
+  /// Returns the zombie's radius for collision detection.
   float get_radius() const { return max_health / 10.f; }
 
-  /**
-   * Returns the global bounds for collision detection.
-   */
+  /// Returns the global bounds for collision detection.
   sf::FloatRect get_global_bounds() const {
     return sf::FloatRect{position - sf::Vector2f{get_radius(), get_radius()},
                          sf::Vector2f{2.f * get_radius(), 2.f * get_radius()}};
   }
 
-  /**
-   * Steps simulation forward by one frame.
-   *
-   * @param frame_duration Frame duration in seconds.
-   * @param player_position Player position.
-   * @param player_velocity Player velocity.
-   */
+  /// Steps simulation forward by one frame.
+  ///
+  /// @param frame_duration Frame duration in seconds.
+  /// @param player_position Player position.
+  /// @param player_velocity Player velocity.
   void update_movement(float frame_duration,
                        const sf::Vector2f& player_position,
                        const sf::Vector2f& player_velocity) {
@@ -156,11 +132,9 @@ class Zombie {
     }
   }
 
-  /**
-   * Draws zombie on main window.
-   *
-   * @param main_window Main window.
-   */
+  /// Draws zombie on main window.
+  ///
+  /// @param main_window Main window.
   void draw(sf::RenderWindow& main_window) {
     body_shape.setRadius(std::max(0.1f, (max_health - health) / 10.f));
     body_shape.setOrigin(body_shape.getGeometricCenter());
@@ -169,12 +143,10 @@ class Zombie {
     main_window.draw(body_shape);
   }
 
-  /**
-   * Spawns zombies at the edge of the map.
-   *
-   * @param zombies The list of active zombies.
-   * @param xp The player's accrued experience (proportional to spawn rate).
-   */
+  /// Spawns zombies at the edge of the map.
+  ///
+  /// @param zombies The list of active zombies.
+  /// @param xp The player's accrued experience (proportional to spawn rate).
   static void spawn(std::vector<Zombie>& zombies, uint32_t xp) {
     uint32_t max_zombies = std::min(xp / 100 + 10, 1000u);
 
@@ -228,9 +200,7 @@ class Zombie {
     new_zombie.set_position(position);
   }
 
-  /**
-   * Resets spawn clock.
-   */
+  /// Resets spawn clock.
   static void reset() { spawn_clock.restart(); }
 
  private:

@@ -2,9 +2,7 @@
 
 #pragma once
 
-/**
- * Weapon type.
- */
+/// Weapon type.
 enum class WeaponType {
   HANDGUN = 0,
   MACHINE_GUN = 1,

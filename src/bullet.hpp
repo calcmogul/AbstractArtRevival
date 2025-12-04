@@ -20,21 +20,17 @@ enum class BulletShape { CIRCLE, RECTANGLE, CONVEX };
 /// Bullet's maximum lifetime in seconds.
 constexpr float BULLET_MAX_LIFETIME = 1.f;
 
-/**
- * Bullet entity.
- */
+/// Bullet entity.
 class Bullet {
  public:
-  /**
-   * Constructs a Bullet of the given weapon type.
-   *
-   * @param position Initial position.
-   * @param velocity Initial velocity.
-   * @param type Weapon type this bullet came from.
-   * @param damage Damage.
-   * @param body_shape SFML body shape.
-   * @param bullet_shape Bullet shape.
-   */
+  /// Constructs a Bullet of the given weapon type.
+  ///
+  /// @param position Initial position.
+  /// @param velocity Initial velocity.
+  /// @param type Weapon type this bullet came from.
+  /// @param damage Damage.
+  /// @param body_shape SFML body shape.
+  /// @param bullet_shape Bullet shape.
   Bullet(const sf::Vector2f& position, const sf::Vector2f& velocity,
          WeaponType type, int damage, std::unique_ptr<sf::Shape> body_shape,
          BulletShape bullet_shape)
@@ -52,55 +48,37 @@ class Bullet {
   Bullet(Bullet&&) = default;
   Bullet& operator=(Bullet&&) = default;
 
-  /**
-   * Returns the position.
-   */
+  /// Returns the position.
   const sf::Vector2f& get_position() const { return position; }
 
-  /**
-   * Returns the velocity.
-   */
+  /// Returns the velocity.
   const sf::Vector2f& get_velocity() const { return velocity; }
 
-  /**
-   * Returns the rotation.
-   */
+  /// Returns the rotation.
   sf::Angle get_rotation() const { return body_shape->getRotation(); }
 
-  /**
-   * Returns the weapon type this bullet came from.
-   */
+  /// Returns the weapon type this bullet came from.
   const WeaponType& get_type() const { return type; }
 
-  /**
-   * Returns the damage this bullet is capable of.
-   */
+  /// Returns the damage this bullet is capable of.
   float get_damage() const { return damage; }
 
-  /**
-   * Returns the global bounds for collision detection.
-   */
+  /// Returns the global bounds for collision detection.
   sf::FloatRect get_global_bounds() const {
     return body_shape->getGlobalBounds();
   }
 
-  /**
-   * Returns the bullet shape.
-   */
+  /// Returns the bullet shape.
   BulletShape get_shape() const { return bullet_shape; }
 
-  /**
-   * Returns true if bullet lifetime clock expired.
-   */
+  /// Returns true if bullet lifetime clock expired.
   bool expired() const {
     return lifetime_clock.getElapsedTime().asSeconds() > BULLET_MAX_LIFETIME;
   }
 
-  /**
-   * Steps simulation forward by one frame.
-   *
-   * @param frame_duration Frame duration in seconds.
-   */
+  /// Steps simulation forward by one frame.
+  ///
+  /// @param frame_duration Frame duration in seconds.
   void update_movement(float frame_duration) {
     sf::Vector2f delta_position = velocity * frame_duration;
 
@@ -127,11 +105,9 @@ class Bullet {
     }
   }
 
-  /**
-   * Draws bullet on main window.
-   *
-   * @param main_window Main window.
-   */
+  /// Draws bullet on main window.
+  ///
+  /// @param main_window Main window.
   void draw(sf::RenderWindow& main_window) { main_window.draw(*body_shape); }
 
  private:

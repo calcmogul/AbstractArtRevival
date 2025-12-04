@@ -22,16 +22,12 @@
 #include "weapon.hpp"
 #include "weapon_type.hpp"
 
-/**
- * Player entity.
- */
+/// Player entity.
 class Player {
  public:
-  /**
-   * Constructs a Player.
-   *
-   * @param position Initial position.
-   */
+  /// Constructs a Player.
+  ///
+  /// @param position Initial position.
   explicit Player(const sf::Vector2f& position) {
     this->position = position;
 
@@ -53,71 +49,51 @@ class Player {
   Player(Player&&) = default;
   Player& operator=(Player&&) = default;
 
-  /**
-   * Returns the position.
-   */
+  /// Returns the position.
   const sf::Vector2f& get_position() const { return position; }
 
-  /**
-   * Sets the velocity.
-   *
-   * @param speed The player's speed.
-   * @param angle The player's velocity direction.
-   */
+  /// Sets the velocity.
+  ///
+  /// @param speed The player's speed.
+  /// @param angle The player's velocity direction.
   void set_velocity(float speed, sf::Angle angle) {
     velocity = {speed * std::cos(angle.asRadians()),
                 speed * std::sin(angle.asRadians())};
   }
 
-  /**
-   * Returns the velocity.
-   */
+  /// Returns the velocity.
   const sf::Vector2f& get_velocity() const { return velocity; }
 
-  /**
-   * Returns the player's health.
-   */
+  /// Returns the player's health.
   float get_health() const { return health; }
 
-  /**
-   * Decrements the player's health by the given amount.
-   *
-   * @param decrement The amount to decrement.
-   */
+  /// Decrements the player's health by the given amount.
+  ///
+  /// @param decrement The amount to decrement.
   void decrement_health(float decrement) { health -= decrement; }
 
-  /**
-   * Returns the player's accrued experience.
-   */
+  /// Returns the player's accrued experience.
   uint32_t get_xp() const { return xp; }
 
-  /**
-   * Increments the player's accrued experience by the given amount.
-   *
-   * @param increment The amount to increment.
-   */
+  /// Increments the player's accrued experience by the given amount.
+  ///
+  /// @param increment The amount to increment.
   void increment_xp(uint32_t increment) { xp += increment; }
 
-  /**
-   * Returns the player's radius for collision detection.
-   */
+  /// Returns the player's radius for collision detection.
   float get_radius() const { return max_health / 10.f; }
 
-  /**
-   * Returns the global bounds for collision detection.
-   */
+  /// Returns the global bounds for collision detection.
   sf::FloatRect get_global_bounds() const {
     return sf::FloatRect{position - sf::Vector2f{get_radius(), get_radius()},
                          sf::Vector2f{2.f * get_radius(), 2.f * get_radius()}};
   }
 
-  /**
-   * Steps simulation forward by one frame.
-   *
-   * @param frame_duration Frame duration in seconds.
-   * @param direction The direction the player will move as a 2D unit vector.
-   * @param sprint Whether the player will attempt to sprint.
-   */
+  /// Steps simulation forward by one frame.
+  ///
+  /// @param frame_duration Frame duration in seconds.
+  /// @param direction The direction the player will move as a 2D unit vector.
+  /// @param sprint Whether the player will attempt to sprint.
   void update_movement(float frame_duration, const sf::Vector2f& direction,
                        bool sprint) {
     const sf::FloatRect PLAYER_BOUNDS{
@@ -154,11 +130,9 @@ class Player {
     stamina = std::min(stamina + 10.f * frame_duration, 100.f);
   }
 
-  /**
-   * Draws player on main window.
-   *
-   * @param main_window Main window.
-   */
+  /// Draws player on main window.
+  ///
+  /// @param main_window Main window.
   void draw(sf::RenderWindow& main_window) {
     for (size_t i = 0; i < 30; ++i) {
       auto angle = sf::radians(i / 29.f * 2.0 * std::numbers::pi_v<float> *
@@ -195,18 +169,14 @@ class Player {
 
   Weapon& get_current_weapon() { return weapons[current_weapon]; }
 
-  /**
-   * Returns the weapon with the given type.
-   *
-   * @param type The weapon type.
-   */
+  /// Returns the weapon with the given type.
+  ///
+  /// @param type The weapon type.
   Weapon& get_weapon(WeaponType type) {
     return weapons[std::to_underlying(type)];
   }
 
-  /**
-   * Switch to previous weapon.
-   */
+  /// Switch to previous weapon.
   void switch_to_previous_weapon() {
     if (current_weapon == 0) {
       current_weapon = NUM_WEAPONS - 1;
@@ -215,27 +185,21 @@ class Player {
     }
   }
 
-  /**
-   * Switch to next weapon.
-   */
+  /// Switch to next weapon.
   void switch_to_next_weapon() {
     current_weapon = (current_weapon + 1) % NUM_WEAPONS;
   }
 
-  /**
-   * Switch to the given weapon.
-   *
-   * @param type The weapon to switch to.
-   */
+  /// Switch to the given weapon.
+  ///
+  /// @param type The weapon to switch to.
   void switch_weapon(WeaponType type) {
     using enum WeaponType;
 
     current_weapon = std::to_underlying(type);
   }
 
-  /**
-   * Returns true and resets timer if player can fire another bullet.
-   */
+  /// Returns true and resets timer if player can fire another bullet.
   bool try_fire() {
     if (fire_period_clock.getElapsedTime().asSeconds() >
         get_current_weapon().fire_period) {
@@ -271,7 +235,7 @@ class Player {
   /// Whether the player can sprint.
   bool can_sprint = true;
 
-  // Player's experience.
+  /// Player's experience.
   uint32_t xp = 0;
 
   std::array<Weapon, 7> weapons{

@@ -21,9 +21,7 @@ sf::Vector2<slp::Variable<double>>::rotatedBy(sf::Angle phi) const {
 
 class CollisionDetector {
  public:
-  /**
-   * Constructs a CollisionDetector.
-   */
+  /// Constructs a CollisionDetector.
   CollisionDetector() {
     // Finds scaling factor α for which all shapes intersect
     α = problem.decision_variable();
@@ -35,12 +33,10 @@ class CollisionDetector {
     point = sf::Vector2<slp::Variable<double>>{x[0], x[1]};
   }
 
-  /**
-   * Adds circle object.
-   *
-   * @param center Circle center.
-   * @param radius Circle radius.
-   */
+  /// Adds circle object.
+  ///
+  /// @param center Circle center.
+  /// @param radius Circle radius.
   void add_circle(const sf::Vector2f& center, float radius) {
     // Point must be within player circle
     problem.subject_to(slp::pow(point.x - center.x, 2) +
@@ -50,13 +46,11 @@ class CollisionDetector {
     add_point_to_initial_guess(center);
   }
 
-  /**
-   * Adds rectangle object.
-   *
-   * @param center Rectangle center.
-   * @param size Rectangle size.
-   * @param rotation Rectangle's clockwise rotation.
-   */
+  /// Adds rectangle object.
+  ///
+  /// @param center Rectangle center.
+  /// @param size Rectangle size.
+  /// @param rotation Rectangle's clockwise rotation.
   void add_rectangle(const sf::Vector2f& center, const sf::Vector2f& size,
                      sf::Angle rotation) {
     // Rotate point counterclockwise around rectangle center to counteract
@@ -73,9 +67,7 @@ class CollisionDetector {
     add_point_to_initial_guess(center);
   }
 
-  /**
-   * Returns true if all shapes collide.
-   */
+  /// Returns true if all shapes collide.
   bool collides() {
     point.x.set_value(initial_guess.x);
     point.y.set_value(initial_guess.y);
@@ -92,11 +84,9 @@ class CollisionDetector {
   sf::Vector2f initial_guess{0.f, 0.f};
   int num_shapes = 0;
 
-  /**
-   * Add the given point to the running average initial guess.
-   *
-   * @param point Point to add.
-   */
+  /// Add the given point to the running average initial guess.
+  ///
+  /// @param point Point to add.
   void add_point_to_initial_guess(const sf::Vector2f& point) {
     ++num_shapes;
     initial_guess = initial_guess * static_cast<float>(num_shapes - 1) /

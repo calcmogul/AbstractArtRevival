@@ -35,9 +35,7 @@
 //     * Add branch to bullet-zombie collision if there's special handling of
 //       collisions (e.g., chain/area damage).
 
-/**
- * Returns initial ammo for the given weapon.
- */
+/// Returns initial ammo for the given weapon.
 constexpr int get_initial_ammo(WeaponType type) {
   constexpr std::array INITIAL_AMMO{1000, 250, 200, 10, 20, 500, 10};
   return INITIAL_AMMO[std::to_underlying(type)];
@@ -52,11 +50,9 @@ class Weapon {
   float bullet_speed;
   int bullet_damage;
 
-  /**
-   * Constructs a weapon with the default amount of initial ammo.
-   *
-   * @param type Weapon type.
-   */
+  /// Constructs a weapon with the default amount of initial ammo.
+  ///
+  /// @param type Weapon type.
   explicit Weapon(WeaponType type) : type{type}, ammo{get_initial_ammo(type)} {
     using enum WeaponType;
 
@@ -106,21 +102,17 @@ class Weapon {
     }
   }
 
-  /**
-   * Constructs a weapon.
-   *
-   * @param type Weapon type.
-   * @param ammo Initial ammo.
-   */
+  /// Constructs a weapon.
+  ///
+  /// @param type Weapon type.
+  /// @param ammo Initial ammo.
   Weapon(WeaponType type, int ammo) : Weapon(type) { this->ammo = ammo; }
 
-  /**
-   * Fires a bullet from the gun.
-   *
-   * @param position Initial bullet position.
-   * @param rotation Bullet rotation as a 2D unit vector.
-   * @return The bullet instance.
-   */
+  /// Fires a bullet from the gun.
+  ///
+  /// @param position Initial bullet position.
+  /// @param rotation Bullet rotation as a 2D unit vector.
+  /// @return The bullet instance.
   Bullet make_bullet(const sf::Vector2f& position,
                      const sf::Vector2f& rotation) {
     using enum WeaponType;
@@ -225,12 +217,10 @@ class Weapon {
     }
   }
 
-  /**
-   * Draws weapon symbol next to player on main window.
-   *
-   * @param main_window Main window.
-   * @param player_position Player position.
-   */
+  /// Draws weapon symbol next to player on main window.
+  ///
+  /// @param main_window Main window.
+  /// @param player_position Player position.
   void draw(sf::RenderWindow& main_window,
             const sf::Vector2f& player_position) {
     using enum WeaponType;
