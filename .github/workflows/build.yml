@@ -29,7 +29,7 @@ jobs:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Make GCC 14 the default toolchain (Linux)
         if: startsWith(matrix.os, 'ubuntu')
@@ -47,7 +47,7 @@ jobs:
       - run: cmake --build build --config RelWithDebInfo --parallel 4
       - run: cmake --install build --config RelWithDebInfo --prefix pkg
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.name }}
           path: pkg
