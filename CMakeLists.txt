@@ -38,7 +38,7 @@ set(BUILD_TESTING OFF CACHE INTERNAL "Build Testing")
 FetchContent_Declare(
     Sleipnir
     GIT_REPOSITORY https://github.com/SleipnirGroup/Sleipnir
-    GIT_TAG v0.3.3
+    GIT_TAG v0.3.4
     GIT_SHALLOW ON
     EXCLUDE_FROM_ALL
     SYSTEM
