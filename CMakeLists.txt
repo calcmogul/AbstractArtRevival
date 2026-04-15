@@ -34,11 +34,10 @@ FetchContent_MakeAvailable(SFML)
 target_link_libraries(AbstractArtRevival PUBLIC SFML::Graphics)
 
 set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "Build using shared libraries")
-set(BUILD_TESTING OFF CACHE INTERNAL "Build Testing")
 FetchContent_Declare(
     Sleipnir
     GIT_REPOSITORY https://github.com/SleipnirGroup/Sleipnir
-    GIT_TAG v0.5.2
+    GIT_TAG v0.5.3
     GIT_SHALLOW ON
     EXCLUDE_FROM_ALL
     SYSTEM
