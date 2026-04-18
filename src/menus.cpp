@@ -148,7 +148,7 @@ void display_main_menu(sf::RenderWindow& main_window,
         menu_item.setFillColor(sf::Color{128, 128, 128});
         menu_item.setOutlineColor(sf::Color::White);
         menu_item.setOutlineThickness(4.f);
-        choice_made = menu_item.getString();
+        choice_made = menu_item.getString().toAnsiString();
       } else {
         menu_item.setFillColor(sf::Color::White);
         menu_item.setOutlineColor(sf::Color::Transparent);
@@ -223,7 +223,7 @@ bool display_pause_menu(sf::RenderWindow& main_window,
         menu_item.setFillColor(sf::Color{128, 128, 128});
         menu_item.setOutlineColor(sf::Color::White);
         menu_item.setOutlineThickness(4.f);
-        choice_made = menu_item.getString();
+        choice_made = menu_item.getString().toAnsiString();
       } else {
         menu_item.setFillColor(sf::Color::White);
         menu_item.setOutlineColor(sf::Color::Transparent);
