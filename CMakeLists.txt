@@ -38,7 +38,7 @@ set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "Build using shared libraries")
 FetchContent_Declare(
     Sleipnir
     GIT_REPOSITORY https://github.com/SleipnirGroup/Sleipnir
-    GIT_TAG v0.5.5
+    GIT_TAG v0.6.0
     GIT_SHALLOW ON
     EXCLUDE_FROM_ALL
     SYSTEM
