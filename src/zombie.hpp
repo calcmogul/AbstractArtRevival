@@ -106,22 +106,10 @@ class Zombie {
         MAP_BOUNDS.position + sf::Vector2f{get_radius(), get_radius()},
         MAP_BOUNDS.size - sf::Vector2f{get_radius(), get_radius()}};
 
-    float player_speed = player_velocity.length();
-    float zombie_speed = velocity.length();
-
-    // Aim zombie at player
-    velocity = {zombie_speed, (player_position - position).angle()};
-
-    float player_cos = player_velocity.x / player_speed;
-    float player_sin = player_velocity.y / player_speed;
-    float zombie_cos = velocity.x / zombie_speed;
-    float zombie_sin = velocity.y / zombie_speed;
-
-    // Aim zombie at player while leading target
-    float a = player_cos * zombie_cos - player_sin * zombie_sin;
-    if (std::abs(player_speed / zombie_speed * a) < 1.f) {
-      velocity = velocity.rotatedBy(
-          sf::radians(std::asin(player_speed / zombie_speed * a)));
+    // Zombie has no direction to aim if it's on top of player, so keep the
+    // previous heading
+    if (player_position != position) {
+      aim_at_player(player_position, player_velocity);
     }
 
     sf::Vector2f delta_position = velocity * frame_duration;
@@ -204,6 +192,56 @@ class Zombie {
   static void reset() { spawn_clock.restart(); }
 
  private:
+  /// Aims zombie at player while leading target.
+  ///
+  /// @param player_position Player position.
+  /// @param player_velocity Player velocity.
+  void aim_at_player(const sf::Vector2f& player_position,
+                     const sf::Vector2f& player_velocity) {
+    float zombie_speed = velocity.length();
+
+    // Aim zombie at player
+    velocity = {zombie_speed, (player_position - position).angle()};
+
+    // Lead target by rotating velocity by θ so the line of sight doesn't
+    // rotate (constant-bearing intercept).
+    //
+    // Let u be the unit vector from zombie to player, vₚ be the player
+    // velocity, and v_z = |v| be the zombie speed. The line of sight stays
+    // fixed if the zombie's and player's velocity components perpendicular to
+    // u are equal:
+    //
+    //   v_z sin θ = u × vₚ
+    //
+    // The zombie velocity currently points along u, so v = v_z u and
+    // u = v/v_z.
+    //
+    //   v_z sin θ = (v/v_z) × vₚ
+    //   sin θ = (v × vₚ)/v_z²
+    //
+    // A solution for θ exists if |sin θ| ≤ 1, which only requires the zombie to
+    // be faster than the player's perpendicular velocity component, not the
+    // player's full speed. The zombie also has to close the distance along u,
+    // so the intercept is valid only if the closing speed is positive:
+    //
+    //   v_z cos θ − u · vₚ > 0
+    //   v_z cos θ − (v · vₚ)/v_z > 0
+    //
+    // where cos θ = √(1 − sin²θ). The other solution, θ' = 180° − θ, has
+    // cos θ' = −cos θ and a lower closing speed, so it's never valid when this
+    // one isn't. If neither is valid, the zombie chases the player directly.
+    float sin_lead =
+        velocity.cross(player_velocity) / (zombie_speed * zombie_speed);
+    if (std::abs(sin_lead) <= 1.f) {
+      float cos_lead = std::sqrt(1.f - sin_lead * sin_lead);
+      float closing_speed = zombie_speed * cos_lead -
+                            velocity.dot(player_velocity) / zombie_speed;
+      if (closing_speed > 0.f) {
+        velocity = velocity.rotatedBy(sf::radians(std::asin(sin_lead)));
+      }
+    }
+  }
+
   static constexpr sf::Color BODY_COLOR{40, 60, 40};
 
   /// Spawn period in seconds
