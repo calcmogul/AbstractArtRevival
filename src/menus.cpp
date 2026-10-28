@@ -17,19 +17,14 @@
 
 void load_high_scores(std::vector<unsigned int>& high_score_list) {
   std::ifstream load_file{"scores.txt"};
-  if (!load_file.is_open()) {
-    return;
+
+  unsigned int score;
+  while (high_score_list.size() < 5 && load_file >> score) {
+    high_score_list.push_back(score);
   }
 
-  int i = 0;
-  do {
-    std::string str;
-    std::getline(load_file, str);
-    if (!load_file.eof()) {
-      high_score_list.push_back(std::stoi(str));
-    }
-    ++i;
-  } while (!load_file.eof() && i < 5);
+  // Sort highest to lowest so save_high_scores() can binary search
+  std::ranges::sort(high_score_list, std::greater<>());
 }
 
 void save_high_scores(std::vector<unsigned int>& high_score_list,
@@ -41,7 +36,9 @@ void save_high_scores(std::vector<unsigned int>& high_score_list,
       score);
 
   // Save only top 5 scores (highest to lowest)
-  high_score_list.erase(high_score_list.begin() + 5, high_score_list.end());
+  if (high_score_list.size() > 5) {
+    high_score_list.resize(5);
+  }
 
   std::ofstream save_file{"scores.txt"};
 
